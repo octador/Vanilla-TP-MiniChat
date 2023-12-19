@@ -1,0 +1,15 @@
+.styleborder{
+    padding: 0px !important;
+}
+.creatuser{
+    margin-top: 100px !important;
+}
+.dialogue-box{
+
+    position: fixed;
+    bottom:  10px;
+
+}
+.background-body{
+    background-color: rgb(0, 0, 0) !important;
+}

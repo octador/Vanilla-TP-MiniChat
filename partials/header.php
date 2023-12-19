@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <div class="">
+<body class="">
+<header>
+    <div class="container-fluid border border-1 p-0 ">
         <nav class="navbar" style="background-color: #e3f2fd;">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
@@ -34,3 +35,4 @@
             </nav>
         </nav>
     </div>
+</header>
