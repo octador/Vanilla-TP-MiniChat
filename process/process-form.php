@@ -1,57 +1,43 @@
 <?php
-
-// var_dump($_POST['pseudo'])
 require_once('../utilis/connect.php');
-// session_start();
 
-// if (isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
-//     require_once('../utilis/connect.php');
-//     $pseudoName = $_POST['pseudo'];
-//     // var_dump($pseudoName);
-//     // die();
-//     $sql = "SELECT pseudo FROM user WHERE pseudo = '$pseudoName'";
-//     $request = $db->query($sql);
-//     $pseudo = $request->fetch();
-    
-// } 
+if (isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
 
+    $pseudo_name = $_POST['pseudo'];
 
-// si pseudo existe pas j'en crée un et je retourne sur index
-if (!$pseudo && isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
-    require_once('../utilis/connect.php');
-    $sql = 'INSERT INTO user (pseudo) VALUES (:pseudo)';
-    $request = $db->prepare($sql);
-    $request->execute([
-        'pseudo' => $_POST['pseudo']
+    // Si le pseudo existe dans ma BDD, je récupère l'utilisateur et je récupère son ID
+    $request = $db->prepare("SELECT * FROM user WHERE pseudo = :pseudo");
+    $request->bindValue(':pseudo', $pseudo_name);
+    $request->execute();
+    $pseudoSelects = $request->fetch();
+
+    if ($pseudoSelects) {
+        // tu récupères son ID
+        $userId = $pseudoSelects['id'];
+
+        // L'id de l'utilisateur;
+    } else {
+        $sql = 'INSERT INTO user (pseudo) VALUES (:pseudo)';
+        $request2 = $db->prepare($sql);
+        $request2->execute([
+            'pseudo' => $_POST['pseudo']
+        ]);
+
+        $userId = $db->lastInsertId();
+    }
+
+    $ipAdress = $_SERVER['SERVER_ADDR'];
+
+    $createdAt = date('Y-m-d H:i:s');
+
+    $sql1 = 'INSERT INTO message (content, created_at, ip_adress, user_id ) VALUES (:content,:created_at, :ip_adress,:user_id)';
+
+    $request1 = $db->prepare($sql1);
+    $request1->execute([
+        'content' => $_POST['content'],
+        'created_at' => $createdAt,
+        'ip_adress' => $ipAdress,
+        'user_id' => $userId
     ]);
-    // si il existe je retourne sur index
 }
-
 header('Location: ../index.php');
-
-
-?>
-
-
-
-
-// if (isset($_POST) && !empty($_POST)) {
-
-// echo ($_POST['pseudo']);
-
-// $_SERVER['HTTP_HOST'];
-
-// $dt = time();
-
-// echo $date = date('d/m/Y H:i:s',$dt);
-// // var_dump($dt);
-
-// $sql = 'INSERT INTO user (pseudo) VALUES (:pseudo)';
-// $request = $db->prepare($sql);
-
-// $newUser = $request->execute([
-// 'pseudo' => $_POST['pseudo']
-// ]);
-
-// // var_dump($newUser);
-// }

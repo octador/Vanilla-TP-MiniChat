@@ -2,33 +2,34 @@
 require_once('../Vanilla-TP-MiniChat/utilis/connect.php');
 include_once('../Vanilla-TP-MiniChat/partials/header.php');
 include_once('../Vanilla-TP-MiniChat/partials/footer.php');
-// session_start();
+include_once('./process/process-array.php');
 
-
-$sql = "SELECT pseudo,id FROM user ";
-    $request = $db->query($sql);
-    $pseudo = $request->fetchall();
-
-    var_dump($pseudo);
-
-
-
-$request = $db->query('SELECT * FROM message JOIN user ON message.user_id = user.id');
-$jointure = $request-> fetchAll();
-
-var_dump($jointure);
-
+foreach ($jointures as $jointure) {
+   echo '<p>' . $jointure['pseudo'] .
+    $jointure['content'].
+    $jointure['created_at'].
+    $jointure['user_id'] 
+  . '</p>';
+}
 ?>
+<main>
+    <div class="justify-content-center">
+        <form action="./process/process-form.php" method="post">
+    
+        <label for="pseudo"> Pseudo</label>
+        <input type="text" name="pseudo">
+    
+        <label for="message"> message</label>
+        <input type="text" name="content">
+    
+        <input type="hidden" name="created_at">
+        <input type="hidden" name="ip_adress">
+        <input type="hidden" name="user_id">
+    
+        <button type="submit"> Envoyer</button>
+    </form>
+</div>
+</main>
 
-<h1>Welcome <?php ?></h1>
 
 
-<a href="./page/form-creat-user.php">creat pseudo</a>
-
-<form action="./process/process-form.php" method="get">
-    <label for="pseudo"> Pseudo</label>
-    <input type="text" name="pseudo">
-    <label for="message"> message</label>
-    <input type="text" name="content">
-    <button type="submit"> Envoyer</button>
-</form>
